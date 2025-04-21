@@ -1,45 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:instalasi/stack.dart';
 
-class RowColumn extends StatelessWidget {
+class RowColumn extends StatefulWidget {
+  const RowColumn({super.key});
+
+  @override
+  State<RowColumn> createState() => _RowColumnstate();
+}
+
+class _RowColumnstate extends State<RowColumn> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  void handleLogin() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder:
+            (context) => StackProfile(
+              email: emailController.text, // Hanya mengirim email
+            ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login Form Layout')),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Text(
-                'Login',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+              'Login',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+
+            CircleAvatar(
+              radius: 50,
+              backgroundImage: const AssetImage('images/login.jpg'),
+              onBackgroundImageError: (_, __) {
+                debugPrint("Gambar tidak ditemukan di images/login.jpg");
+              },
+            ),
+
+            const SizedBox(height: 20),
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.email),
               ),
-              SizedBox(height: 20),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: passwordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.lock),
               ),
-              SizedBox(height: 10),
-              TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(onPressed: () {}, child: Text('Login')),
-              SizedBox(height: 10),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                ],
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(onPressed: handleLogin, child: const Text('Login')),
+          ],
         ),
       ),
     );
